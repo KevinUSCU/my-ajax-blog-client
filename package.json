@@ -16,9 +16,7 @@
   ],
   "author": "Kevin Springer",
   "license": "ISC",
-  "dependencies": {
-    "axios": "^0.17.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "live-server": "^1.2.0"
   }
