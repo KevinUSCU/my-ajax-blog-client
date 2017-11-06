@@ -10,29 +10,39 @@ $('#new-post')[0].addEventListener('click', event => createNewPost())
 
 
 function displayIndex() {
-  axios.get(`${baseURL}/posts`).then(result => {
-    let postbin = $(document.createElement('div'))
-    postbin.id = 'postbin'
-    result.data.forEach(element => {
-      let { id, title } = element
-      let previewItem = buildIndexItem(id, title)
-      postbin.append(previewItem)
+  axios.get(`${baseURL}/posts`)
+    .then(result => {
+      let postbin = $(document.createElement('div'))
+      postbin.id = 'postbin'
+      result.data.forEach(element => {
+        let { id, title, date, content } = element
+        let previewItem = buildIndexItem(id, title, date, content)
+        postbin.append(previewItem)
+      })
+      // Replace existing content with index of posts
+      pageContent.html(postbin)
+      // Create event listent for index item buttons
+      postbin[0].addEventListener('click', (event) => {
+        if (event.target.nodeName === 'BUTTON') viewPost(event.target.id)
+      })
     })
-    // Replace existing content with index of posts
-    pageContent.html(postbin)
-    // Create event listent for index item buttons
-    postbin[0].addEventListener('click', (event) => {
-      if (event.target.nodeName === 'BUTTON') viewPost(event.target.id)
-    })
-  })
 }
 
-function buildIndexItem(id, title) {
+function buildIndexItem(id, title, date, content) {
+  // Format date item mm/dd/yy
+  const options = { year: '2-digit', month: '2-digit', day: '2-digit' };
+  let formattedDate = new Date(date).toLocaleDateString('en-US', options)
+  // Index items use Bootstrap cards
   let item = `
-    <div class="pvw-item">
-      <h4>${title}</h4>
-      <button id="${id}" type="button" class="btn btn-primary btn-sm">View Post</button>
+    <div class="card index-item">
+      <h4 class="card-header">${title}</h4>
+      <div class="card-body">
+        <p class="card-subtitle mb-2 text-muted"><small>Updated on: ${formattedDate}</small></p>
+        <p class="card-text">${content}</p>
+        <button id="${id}" type="button" class="btn btn-primary btn-sm">View Post</button>
+      </div>
     </div>
+    <br>
   `
   return item
 }
