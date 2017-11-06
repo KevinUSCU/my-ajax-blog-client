@@ -8,30 +8,33 @@ displayIndex()
 $('#home')[0].addEventListener('click', event => displayIndex())
 $('#new-post')[0].addEventListener('click', event => createNewPost())
 
+// Set listeners for content
+pageContent[0].addEventListener('click', (event) => {
+  if (event.target.nodeName === 'BUTTON') {
+    if ($(event.target).hasClass('view-button')) viewPost(event.target.id)
+    else if ($(event.target).hasClass('update-button')) console.log('update-button')
+    else if ($(event.target).hasClass('delete-button')) console.log('delete-button')
+  }
+})
 
 function displayIndex() {
   axios.get(`${baseURL}/posts`)
     .then(result => {
-      let postbin = $(document.createElement('div'))
-      postbin.id = 'postbin'
+      // Clear existing content
+      pageContent.html('')
+      // Add post index items
       result.data.forEach(element => {
         let { id, title, date, content } = element
         let previewItem = buildIndexItem(id, title, date, content)
-        postbin.append(previewItem)
-      })
-      // Replace existing content with index of posts
-      pageContent.html(postbin)
-      // Create event listent for index item buttons
-      postbin[0].addEventListener('click', (event) => {
-        if (event.target.nodeName === 'BUTTON') viewPost(event.target.id)
+        pageContent.append(previewItem)
       })
     })
 }
 
 function buildIndexItem(id, title, date, content) {
-  // Format date item mm/dd/yy
+  // Format date item Month Day, Year
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  let formattedDate = new Date(date).toLocaleDateString('en-US', options)
+  let formattedDate = new Date(date).toLocaleString('en-US', options)
   // Index items use Bootstrap cards
   let item = `
     <div class="card index-item">
@@ -39,7 +42,7 @@ function buildIndexItem(id, title, date, content) {
       <div class="card-body">
         <p class="card-subtitle mb-2 text-muted">${formattedDate}</p>
         <p class="card-text">${content}</p>
-        <button id="${id}" type="button" class="btn btn-outline-primary btn-sm">view full post</button>
+        <button id="${id}" type="button" class="btn btn-outline-primary btn-sm view-button">view full post</button>
       </div>
     </div>
     <br>
@@ -56,11 +59,29 @@ function viewPost(id) {
     pageContent.html(post)
     // Set button listeners
 
+
   })
 }
 
-function buildPost(id, title, content, data) {
+function buildPost(id, title, content, date) {
+  // Format date item 
+  const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+  const timeOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+  let formattedDate = new Date(date).toLocaleString('en-US', dateOptions)
+  let formattedTime = new Date(date).toLocaleString('en-US', timeOptions)
+  // Post view uses Bootstrap jumbotron
   let post = `
+    <div class="jumbotron post-item">
+      <h1 class="display-3">${title}</h1>
+      <p class="lead">Updated ${formattedDate} at ${formattedTime}</p>
+      <hr class="my-4">
+      <p class="post-content">${content}</p>
+      <hr class="my-4">
+      <p class="lead">
+        <button id="${id}" type="button" class="btn btn-outline-primary btn-sm update-button">update post</button>
+        <button id="${id}" type="button" class="btn btn-outline-primary btn-sm delete-button">delete post</button>
+      </p>
+    </div>
   `
   return post
 }
