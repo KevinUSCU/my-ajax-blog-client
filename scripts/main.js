@@ -30,16 +30,16 @@ function displayIndex() {
 
 function buildIndexItem(id, title, date, content) {
   // Format date item mm/dd/yy
-  const options = { year: '2-digit', month: '2-digit', day: '2-digit' };
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
   let formattedDate = new Date(date).toLocaleDateString('en-US', options)
   // Index items use Bootstrap cards
   let item = `
     <div class="card index-item">
       <h4 class="card-header">${title}</h4>
       <div class="card-body">
-        <p class="card-subtitle mb-2 text-muted"><small>Updated on: ${formattedDate}</small></p>
+        <p class="card-subtitle mb-2 text-muted">${formattedDate}</p>
         <p class="card-text">${content}</p>
-        <button id="${id}" type="button" class="btn btn-outline-primary btn-sm"><small>view full post</small></button>
+        <button id="${id}" type="button" class="btn btn-outline-primary btn-sm">view full post</button>
       </div>
     </div>
     <br>
