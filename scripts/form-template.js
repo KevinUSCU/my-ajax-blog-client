@@ -1,4 +1,4 @@
-postForm = `
+postFormTemplate = `
   <form>
     <div class="form-group">
       <label for="postTitle">Post Title</label>
