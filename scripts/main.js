@@ -39,7 +39,7 @@ function buildIndexItem(id, title, date, content) {
       <div class="card-body">
         <p class="card-subtitle mb-2 text-muted"><small>Updated on: ${formattedDate}</small></p>
         <p class="card-text">${content}</p>
-        <button id="${id}" type="button" class="btn btn-primary btn-sm">View Post</button>
+        <button id="${id}" type="button" class="btn btn-outline-primary btn-sm"><small>view full post</small></button>
       </div>
     </div>
     <br>
