@@ -4,4 +4,4 @@
 
 ## SETUP
 1. `npm install`
-2. 
+2. dev mode: `npm run dev`
