@@ -1,13 +1,13 @@
 postFormTemplate = `
   <form>
     <div class="form-group">
-      <label for="postTitle">Title</label>
-      <input type="text" class="form-control" id="postTitle" placeholder="title">
+      <label for="postTitle">I am a Post! And my name is:</label>
+      <input type="text" class="form-control" id="postTitle" placeholder="this post needs a zippy title; type it right here!" required>
     </div>
     <div class="form-group">
-      <label for="postContent">Content</label>
-      <input type="text" class="form-control" id="postContent" placeholder="type your post here">
+      <label for="postContent">TL;DR</label>
+      <textarea class="form-control" id="postContent" placeholder="blah, blah, blah..." rows="8" required></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-outline-primary">Submit</button>
   </form>
 `
