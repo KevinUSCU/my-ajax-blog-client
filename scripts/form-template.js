@@ -8,6 +8,6 @@ postFormTemplate = `
       <label for="postContent">TL;DR</label>
       <textarea class="form-control" id="postContent" placeholder="blah, blah, blah..." rows="8" required></textarea>
     </div>
-    <button type="submit" class="btn btn-outline-primary">Submit</button>
+    <button type="submit" class="btn btn-outline-primary submit-button">Submit</button>
   </form>
 `
