@@ -8,25 +8,20 @@ displayIndex()
 $('#home')[0].addEventListener('click', event => displayIndex())
 $('#new-post')[0].addEventListener('click', event => createNewPost())
 
-// Set listeners for content
-pageContent[0].addEventListener('click', (event) => {
-  if (event.target.nodeName === 'BUTTON') {
-    if ($(event.target).hasClass('view-button')) viewPost(event.target.id)
-    else if ($(event.target).hasClass('update-button')) console.log('update-button')
-    else if ($(event.target).hasClass('delete-button')) console.log('delete-button')
-  }
-})
-
 function displayIndex() {
   axios.get(`${baseURL}/posts`)
     .then(result => {
-      // Clear existing content
+      // Clear existing content (because we only use append to display items below)
       pageContent.html('')
       // Add post index items
       result.data.forEach(element => {
         let { id, title, date, content } = element
         let previewItem = buildIndexItem(id, title, date, content)
         pageContent.append(previewItem)
+      })
+      // Set button listeners
+      pageContent[0].addEventListener('click', (event) => {
+        if ($(event.target).hasClass('view-button')) displayPost(event.target.id)
       })
     })
 }
@@ -50,20 +45,19 @@ function buildIndexItem(id, title, date, content) {
   return item
 }
 
-function viewPost(id) {
+function displayPost(id) {
   axios.get(`${baseURL}/posts/${id}`).then(result => {
-    console.log(result)
-    let { id, title, content, date } = result.data
-    let post = buildPost(id, title, content, date)
+    let { title, content, date } = result.data
+    let post = buildPostItem(id, title, content, date)
     // Replace existing content with post
     pageContent.html(post)
-    // Set button listeners
-
-
+    // Add button listeners
+    $('#update-button')[0].addEventListener('click', () => updatePost(id, title, content))
+    $('#delete-button')[0].addEventListener('click', () => deletePost(id))
   })
 }
 
-function buildPost(id, title, content, date) {
+function buildPostItem(id, title, content, date) {
   // Format date item 
   const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
   const timeOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric' }
@@ -78,8 +72,8 @@ function buildPost(id, title, content, date) {
       <p class="post-content">${content}</p>
       <hr class="my-4">
       <p class="lead">
-        <button id="${id}" type="button" class="btn btn-outline-primary btn-sm update-button">update post</button>
-        <button id="${id}" type="button" class="btn btn-outline-primary btn-sm delete-button">delete post</button>
+        <button id="update-button" type="button" class="btn btn-outline-primary btn-sm">update post</button>
+        <button id="delete-button" type="button" class="btn btn-outline-primary btn-sm">delete post</button>
       </p>
     </div>
   `
@@ -87,5 +81,69 @@ function buildPost(id, title, content, date) {
 }
 
 function createNewPost() {
+  // Display from form template
+  let header = `
+    <h1>Create New Post</h1>
+    <hr>
+  `
+  let postForm = header + postFormTemplate
+  pageContent.html(postForm)
+  // Form field references
+  let postTitle = $('#post-title')[0]
+  let postContent = $('#post-content')[0]
+  // Add button listener
+  $('#submit-button')[0].addEventListener('click', event => {
+    event.preventDefault()
+    axios.post(`${baseURL}/posts`, { 'title': postTitle.value, 'content': postContent.value })
+      .then(result => {
+        displayPost(result.data.id)
+      })
+      .catch(error => {
+        // Display error message
+        let errorMessage = `
+          <div class="alert alert-danger" role="alert">
+            ${error.response.data.error}
+          </div>
+        `
+        $('#message').html(errorMessage)
+      })
+  })
+}
 
+function updatePost(id, title, content) {
+  // Display from form template
+  let header = `
+    <h1>Update Post</h1>
+    <hr>
+  `
+  let postForm = header + postFormTemplate
+  pageContent.html(postForm)
+  // Form field references
+  let postTitle = $('#post-title')[0]
+  let postContent = $('#post-content')[0]
+  // Insert existing data
+  postTitle.value = title
+  postContent.value = content
+  // Add button listener
+  $('#submit-button')[0].addEventListener('click', event => {
+    event.preventDefault()
+    axios.put(`${baseURL}/posts/${id}`, { 'title': postTitle.value, 'content': postContent.value })
+      .then(result => {
+        displayPost(result.data.id)
+      })
+      .catch(error => {
+        // Display error message
+        let errorMessage = `
+          <div class="alert alert-danger" role="alert">
+            ${error.response.data.error}
+          </div>
+        `
+        $('#message').html(errorMessage)
+      })
+  })
+}
+
+function deletePost(id) {
+  axios.delete(`${baseURL}/posts/${id}`)
+    .then(result => displayIndex())
 }
