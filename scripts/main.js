@@ -1,4 +1,5 @@
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://git.heroku.com/kevinuscu-my-ajax-blog-server.git'
+// const baseURL = 'http://localhost:3000'
 
 // On page load, get content reference and display index
 const pageContent = $('#content')
