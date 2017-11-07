@@ -1,4 +1,6 @@
-const baseURL = 'https://git.heroku.com/kevinuscu-my-ajax-blog-server.git:3000'
+// Following line is to connect to deployed Heroku server
+const baseURL = 'https://kevinuscu-my-ajax-blog-server.herokuapp.com/'
+// Following line is to connect to locally hosted server
 // const baseURL = 'http://localhost:3000'
 
 // On page load, get content reference and display index
