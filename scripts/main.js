@@ -1,5 +1,5 @@
 // Following line is to connect to deployed Heroku server
-const baseURL = 'https://kevinuscu-my-ajax-blog-server.herokuapp.com/'
+const baseURL = 'https://kevinuscu-my-ajax-blog-server.herokuapp.com'
 // Following line is to connect to locally hosted server
 // const baseURL = 'http://localhost:3000'
 
