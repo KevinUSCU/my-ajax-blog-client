@@ -1,13 +1,21 @@
-postFormTemplate = `
+var postFormTemplate = `
   <form>
     <div class="form-group">
-      <label for="postTitle">I am a Post! And my name is:</label>
-      <input type="text" class="form-control" id="postTitle" placeholder="this post needs a zippy title; type it right here!" required>
+      <label for="post-title">I am a Post! And my name is:</label>
+      <input type="text" class="form-control" id="post-title" placeholder="this post needs a zippy title; type it right here!">
     </div>
     <div class="form-group">
-      <label for="postContent">TL;DR</label>
-      <textarea class="form-control" id="postContent" placeholder="blah, blah, blah..." rows="8" required></textarea>
+      <label for="post-content">TL;DR</label>
+      <textarea class="form-control" id="post-content" placeholder="blah, blah, blah..." rows="8"></textarea>
     </div>
-    <button type="submit" class="btn btn-outline-primary submit-button">Submit</button>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-auto">
+          <button id='submit-button' type="submit" class="btn btn-outline-primary">Submit</button>
+        </div>
+        <div id="message" class="col">
+        </div>
+      </div>
+    </div>
   </form>
 `
